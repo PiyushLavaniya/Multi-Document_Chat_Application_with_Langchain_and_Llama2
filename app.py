@@ -68,15 +68,15 @@ def display_chat_history(chain):
 def create_conversational_chain(vectorstore):
     load_dotenv()
     ##Creating the LLM   
-    llm = CTransformers(model="llama-2-7b-chat.ggmlv3.q4_0.bin",
-                        streaming=True, 
-                        callbacks=[StreamingStdOutCallbackHandler()],
-                        model_type="llama", config={'max_new_tokens': 500, 'temperature': 0.01})
-    #llm = Replicate(
-        #model = "replicate/llama-2-70b-chat:58d078176e02c219e11eb4da5a02a7830a283b14cf8f94537af893ccff5ee781",   ##We get the LLM from 'Replicate', we can run it on internet, we do not need to download it.
-        #callbacks=[StreamingStdOutCallbackHandler()],
-        #input={'temperature': 1, 'max_length': 500, 'top_p': 1}
-    #)
+    #llm = CTransformers(model="llama-2-7b-chat.ggmlv3.q4_0.bin",
+                        #streaming=True, 
+                        #callbacks=[StreamingStdOutCallbackHandler()],
+                       #model_type="llama", config={'max_new_tokens': 500, 'temperature': 0.01})
+    llm = Replicate(
+        model = "meta/llama-2-7b-chat:8e6975e5ed6174911a6ff3d60540dfd4844201974602551e10e9e87ab143d81e",   ##We get the LLM from 'Replicate', we can run it on internet, we do not need to download it.
+        callbacks=[StreamingStdOutCallbackHandler()],
+        input={'temperature': 1, 'max_length': 500, 'top_p': 1}
+    )
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
@@ -124,7 +124,7 @@ def main():
         chunks = text_splitter.split_documents(text)
     
         ##Creating the embeddings
-        embeddings = HuggingFaceEmbeddings(model_name = 'sentence-transformers/all-MiniLM-L6-v2', model_kwargs = {'device': 'cpu'})
+        embeddings = HuggingFaceEmbeddings(model_name = 'sentence-transformers/all-MiniLM-L6-v2', model_kwargs = {'device': 'cuda'})
     
         ##Creating the vectorstore
         vectorstore = FAISS.from_documents(chunks, embedding=embeddings)
