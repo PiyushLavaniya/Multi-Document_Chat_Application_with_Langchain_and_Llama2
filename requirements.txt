@@ -10,3 +10,4 @@ transformers
 huggingface_hub
 replicate
 sentence-transformers
+faiss-cpu
