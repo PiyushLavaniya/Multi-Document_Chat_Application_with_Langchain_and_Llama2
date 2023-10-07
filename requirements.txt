@@ -1,0 +1,11 @@
+langchain==0.0.310
+python-dotenv==1.0.0
+streamlit==1.24.1
+streamlit_chat==0.1.1
+ctransformers
+pypdf
+docx2txt
+textloader
+transformers
+huggingface_hub
+replicate
