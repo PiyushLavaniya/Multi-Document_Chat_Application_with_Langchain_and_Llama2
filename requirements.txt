@@ -9,3 +9,4 @@ textloader
 transformers
 huggingface_hub
 replicate
+sentence-transformers
